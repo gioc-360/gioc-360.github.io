@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gio Caballero</title>
+  <meta name="description" content="Gio Caballero. Cornell MBA. Army veteran. Systems builder.">
+  <style>
+    :root {
+      --bg: #1B2C47;
+      --bg-elevated: rgba(56, 64, 72, 0.15);
+      --text: #BDB5A8;
+      --text-secondary: #8A8478;
+      --accent: #C0A460;
+      --link: #8EA8C0;
+      --border: rgba(189, 181, 168, 0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background: linear-gradient(180deg, #192840 0%, var(--bg) 30%, #192840 100%);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 15px;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      animation: page-in 0.8s ease;
+    }
+
+    @keyframes page-in {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    #ambient {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #glow {
+      position: fixed;
+      width: 600px; height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(192, 164, 96, 0.025) 0%, transparent 60%);
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 40px;
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Header */
+    header {
+      padding: 52px 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 1.2rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+    }
+
+    header nav a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.8rem;
+      margin-left: 24px;
+      transition: color 0.25s ease;
+    }
+
+    header nav a:hover {
+      color: var(--accent);
+    }
+
+    /* Thesis */
+    .thesis {
+      padding: 28px 0 0;
+      max-width: 640px;
+    }
+
+    .thesis p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* Work grid */
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 56px;
+      padding: 44px 0 40px;
+    }
+
+    .col-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 28px;
+      opacity: 0.7;
+    }
+
+    /* Projects */
+    .project {
+      margin-bottom: 32px;
+      padding: 16px 18px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .project:hover {
+      background-color: var(--bg-elevated);
+      transform: translateY(-1px);
+    }
+
+    .project h3 {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 4px;
+      transition: text-shadow 0.3s ease;
+    }
+
+    .project:hover h3 {
+      text-shadow: 0 0 18px rgba(192, 164, 96, 0.2);
+    }
+
+    .project .why {
+      font-style: italic;
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .project .org {
+      font-weight: 400;
+      color: var(--text-secondary);
+      font-size: 0.78rem;
+    }
+
+    .project p:last-child {
+      font-size: 0.85rem;
+      line-height: 1.65;
+    }
+
+    /* About (right column, below professional) */
+    .about-inline {
+      margin-top: 12px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .about-inline p {
+      font-size: 0.85rem;
+      margin-bottom: 14px;
+      line-height: 1.65;
+    }
+
+    .about-inline .interests {
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+    }
+
+    .chapter {
+      transition: color 0.3s ease;
+      cursor: default;
+    }
+
+    .chapter:hover {
+      color: var(--accent);
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 0 60px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+    }
+
+    /* Scroll reveals */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal:nth-child(2) { transition-delay: 0.06s; }
+    .reveal:nth-child(3) { transition-delay: 0.12s; }
+    .reveal:nth-child(4) { transition-delay: 0.18s; }
+    .reveal:nth-child(5) { transition-delay: 0.24s; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container { padding: 0 24px; }
+      header { flex-direction: column; gap: 12px; padding: 40px 0 16px; }
+      header nav a { margin-left: 0; margin-right: 20px; }
+      .work-grid { grid-template-columns: 1fr; gap: 36px; padding: 32px 0; }
+      .about-inline { margin-top: 0; padding-top: 0; border-top: none; }
+      body { font-size: 15px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      body { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="ambient"></canvas>
+  <div id="glow"></div>
+
+  <div class="container">
+
+    <header>
+      <h1>Gio Caballero</h1>
+      <nav>
+        <a href="mailto:gc593@cornell.edu">gc593@cornell.edu</a>
+        <a href="https://linkedin.com/in/gio-caballero" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/gioc-360" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </header>
+
+    <div class="thesis reveal">
+      <p>I find manual processes where humans do deterministic work mixed with judgment calls. I separate the two. Automate the deterministic parts. Route the judgment to humans at defined gates. Market research was the first domain. Software development was the second.</p>
+    </div>
+
+    <main>
+      <div class="work-grid">
+
+        <!-- Left: The System -->
+        <div>
+          <p class="col-label reveal">The System</p>
+
+          <div class="project reveal">
+            <h3>Founding Agent</h3>
+            <p class="why">Scripts solve one problem. Systems solve any.</p>
+            <p>Self-improving autonomous build system. Scopes problems, deploys builders, verifies output with parallel agents. Automates every decision that has a right answer. Surfaces the ones that depend on taste.</p>
+          </div>
+
+          <div class="project reveal">
+            <h3>Kiru</h3>
+            <p class="why">The booth needed a crowd.</p>
+            <p>Real-time slash game for Cornell cultural events. Phone as controller, laptop as spectator screen. QR scan, instant play, crowd watches live. Zero onboarding. Built through the Founding Agent in one session: 8 increments, 2,650 lines, runtime-verified.</p>
+          </div>
+
+          <div class="project reveal">
+            <h3>Veteran Intake Chatbot</h3>
+            <p class="why">A veteran building for veterans.</p>
+            <p>Triage from hours to minutes for ~200 annual intakes at Service to School. Ambassadors freed for mentorship.</p>
+          </div>
+        </div>
+
+        <!-- Right: The Origin -->
+        <div>
+          <p class="col-label reveal">The Origin</p>
+
+          <div class="project reveal">
+            <h3>Content Enrichment Platform <span class="org">· MarketCast</span></h3>
+            <p class="why">One client's tool was too good to stay one client's tool.</p>
+            <p>Fuzzy string matching engine that auto-coded open-ended survey responses across 15 international markets. TMDB API integration for title recognition in 13 languages. Confidence tiers: exact matches coded silently, ambiguous ones routed to humans. Paramount, then Nike. 40% unit revenue growth.</p>
+          </div>
+
+          <div class="project reveal">
+            <h3>Self-Serve Delivery Pipeline <span class="org">· MarketCast</span></h3>
+            <p class="why">They wanted drag-and-drop. The data needed a pipeline.</p>
+            <p>Extract cross-tabs with statistical significance preserved, tag, reshape wide-to-long, consolidate. 15 international markets. Reporting time cut 99%. Delivery cycles cut 79%. $7M client renewal secured.</p>
+          </div>
+
+          <div class="about-inline reveal">
+            <p class="col-label">About</p>
+            <p>
+              <span class="chapter">Army, four years.</span>
+              <span class="chapter">NYU, consumer psychology.</span>
+              <span class="chapter">MarketCast, three years building data products.</span>
+              <span class="chapter">Taught myself Python to automate what was breaking the team.</span>
+              <span class="chapter">Noticed the scripts had an architecture. Extracted it.</span>
+              <span class="chapter">Cornell Johnson.</span>
+              <span class="chapter">Dell this summer.</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+
+    <footer></footer>
+
+  </div>
+
+  <script>
+    const isMobile = window.matchMedia('(max-width: 768px)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Cursor glow (desktop)
+    if (!isMobile) {
+      const glow = document.getElementById('glow');
+      document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+        glow.style.opacity = '1';
+      });
+      document.addEventListener('mouseleave', () => {
+        glow.style.opacity = '0';
+      });
+    }
+
+    // Scroll reveals
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('visible');
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Ambient particles
+    if (!prefersReducedMotion) {
+      const c = document.getElementById('ambient');
+      const ctx = c.getContext('2d');
+      let w, h;
+      function resize() { w = c.width = innerWidth; h = c.height = innerHeight; }
+      resize();
+      addEventListener('resize', resize);
+
+      const pts = Array.from({ length: isMobile ? 12 : 30 }, () => ({
+        x: Math.random() * innerWidth,
+        y: Math.random() * innerHeight,
+        r: Math.random() * 1.4 + 0.3,
+        dx: (Math.random() - 0.5) * 0.08,
+        dy: -(Math.random() * 0.12 + 0.02),
+        o: Math.random() * 0.02 + 0.005
+      }));
+
+      (function draw() {
+        ctx.clearRect(0, 0, w, h);
+        pts.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(192, 164, 96, ${p.o})`;
+          ctx.fill();
+          p.x += p.dx; p.y += p.dy;
+          if (p.y < -10) { p.y = h + 10; p.x = Math.random() * w; }
+          if (p.x < -10) p.x = w + 10;
+          if (p.x > w + 10) p.x = -10;
+        });
+        requestAnimationFrame(draw);
+      })();
+    }
+  </script>
+
+  <script data-goatcounter="https://gc593.goatcounter.com/count"
+          async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
